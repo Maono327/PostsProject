@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <style>
+    .center {
+      width: 700px;
+      margin: 0 auto;
+    }
+
+    .post {
+      border: 1px solid black;
+      margin-bottom: 20px;
+      padding: 10px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+    }
+
+    .post img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .post text {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+
+  <meta charset="UTF-8"/>
+  <title>Посты</title>
+</head>
+<body>
+  <div class="center">
+
+    <form th:method="GET" th:action="@{/posts}">
+      <label for="search-input">Найти по тегу:</label>
+      <input style="width: auto" id="search-input" name="search" th:value="${page.search}"/>
+      <button type="submit">Искать!</button>
+
+      <br/>
+
+      <button type="submit"
+              name="pageNumber"
+              id="backButton"
+              th:if="${page.pageNumber > 1}"
+              th:text="'<'"
+              th:value="${page.pageNumber - 1}">
+      </button>
+
+      <span id="currentPage" th:text="${page.pageNumber}"/>
+
+      <button type="submit"
+              name="pageNumber"
+              id="nextButton"
+              th:if="${page.pageNumber < page.pageCount}"
+              th:text="'>'"
+              th:value="${page.pageNumber + 1}">
+
+      </button>
+
+      <label for="posts-per-page-selection">Постов на страницу:</label>
+      <select id="posts-per-page-selection" name="pageSize">
+        <option th:selected="${page.pageSize == 5}" th:value="5">5</option>
+        <option th:selected="${page.pageSize == 10}" th:value="10">10</option>
+        <option th:selected="${page.pageSize == 20}" th:value="20">20</option>
+        <option th:selected="${page.pageSize == 50}" th:value="50">50</option>
+        <option th:selected="${page.pageSize == 100}" th:value="100">100</option>
+      </select>
+    </form>
+
+    <br/>
+    <form th:method="GET" th:action="@{/posts/add}" class="right">
+      <button type="submit">Добавить новый пост!</button>
+    </form>
+    <br/>
+
+    <div id="posts-tape" th:each="post : ${page.posts}" class="post">
+      <h2>
+        <a th:text="${post.name}" th:href="@{/posts/{id}(id=${post.id})}"></a>
+      </h2>
+      <span style="color: darkslateblue" th:each="tag : ${post.tags}" th:text="'#' + ${tag.name} + ' '"></span>
+      <br/>
+
+      <img th:src="${post.postImage}" alt="img" />
+      <p th:text="${post.text}"></p>
+      <span id="likes" th:text="${post.likesCount} + '&#128077;'"></span>
+      <span id="comments" th:text="${post.commentsCount} + '&#128172;'"></span>
+    </div>
+
+  </div>
+</body>
+</html>
