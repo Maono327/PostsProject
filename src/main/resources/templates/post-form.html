@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${post == null ? 'Создание поста' : 'Редактирование поста'}"></title>
+    <style>
+        .center {
+            width: 700px;
+            margin: 0 auto;
+        }
+
+        .post {
+            border: 1px solid black;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .post img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+    </style>
+</head>
+<body>
+<div class="center">
+    <p>
+        <a th:href="@{/posts}">
+            Вернуться на главную &lt;-
+        </a>
+    </p>
+
+    <form th:action="@{${post == null ? '/posts/add' : '/posts/edit/'+post.id}}"
+          th:method="post"
+          enctype="multipart/form-data">
+        <div class="post">
+            <div>
+                <label for="post-name">Название поста:</label>
+                <input type="text"
+                       id="post-name"
+                       name="name"
+                       th:value="${post == null ? null : post.name}"
+                       required="required" />
+            </div>
+
+            <div>
+                <label for="post-tags">Теги (через пробел):</label>
+                <input type="text"
+                       th:value="${post == null ? null : post.tags}"
+                       id="post-tags"
+                       name="tags" />
+            </div>
+
+            <div>
+                <label for="post-image" th:text="${post == null ? 'Изображение:' : 'Загрузить новое изображение'}">:</label>
+                <input type="file"
+                       id="post-image"
+                       name="image"
+                       accept="image/*"
+                       th:attr="required=${post == null ? 'required' : null} "/>
+                <img th:if="${post != null and post.postImage != null}"
+                     th:src="${post.postImage}"
+                     alt="img"/>
+            </div>
+
+            <div>
+                <label for="post-text">Текст:</label>
+                <textarea id="post-text"
+                          name="text"
+                          rows="5"
+                          th:text="${post == null ? null : post.text}"
+                          required="required" >
+                </textarea>
+            </div>
+        </div>
+        <button type="submit" th:text="${post == null ? 'Создать' : 'Изменить'}" style="float: right"></button>
+        <input type="hidden" name="_method" value="update"/>
+    </form>
+</div>
+</body>
+</html>

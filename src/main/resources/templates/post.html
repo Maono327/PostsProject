@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <style>
+    .center {
+      width: 800px;
+      margin: 0 auto;
+    }
+
+    .border {
+      border: 1px solid black;
+      margin-bottom: 20px;
+      padding: 10px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      align-items: flex-end;
+    }
+
+    .post-img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .comment .actions {
+      display:none;
+    }
+
+    .comment:focus-within .actions {
+      display:block;
+    }
+  </style>
+  <meta charset="UTF-8"/>
+  <title th:text="${post.name}"></title>
+</head>
+<body>
+<div class="center">
+
+  <p>
+    <a th:href="@{/posts}">
+      Вернуться на главную &lt;-
+    </a>
+  </p>
+
+  <div class="form">
+    <form method="GET" th:action="@{/posts/edit/{id}(id=${post.id})}">
+      <button type="submit">Редактировать</button>
+    </form>
+    <form method="POST" th:action="@{/posts/remove/{id}(id=${post.id})}">
+      <button type="submit">Удалить</button>
+    </form>
+  </div>
+
+  <div class="border" id="post" style="margin-top: 5px">
+    <h1 th:text="${post.name}" class="text"></h1>
+    <span style="color: darkslateblue" th:each="tag : ${post.tags}" th:text="'#' + ${tag.name} + ' '"></span>
+    <img class="post-img" th:src="${post.postImage}" alt="img" />
+    <p th:text="${post.text}"></p>
+    <span th:text="${post.likesCount}"></span>
+    <form method="POST" th:action="@{/posts/{id}/add-like(id=${post.id})}">
+      <button type="submit">&#128077;</button>
+    </form>
+  </div>
+
+  <p>Комментарии:</p>
+
+  <div th:each="comment : ${post.comments}" id="comments" class="comment" tabindex="0">
+    <p class="border"
+       th:id="'comment' + ${comment.id}"
+       th:text="${comment.text}"
+       th:onclick="'editComment(' + ${comment.id} + ')'"></p>
+
+    <div class="actions">
+      <form method="POST"
+            th:action="@{/posts/{postId}/edit-comment/{commentId}(postId=${post.id}, commentId=${comment.id})}">
+        <textarea name="text" rows="3" style="width:100%"></textarea>
+        <button style="float: right" type="submit">&#10003;</button>
+      </form>
+
+      <form method="POST"
+            th:action="@{/posts/{postId}/remove/{commentId}(postId=${post.id}, commentId=${comment.id})}">
+        <button style="float: right" type="submit">&#10007;</button>
+      </form>
+    </div>
+  </div>
+
+  <form id="addCommentForm"
+        style="float: right"
+        method="POST"
+        th:action="@{/posts/{postId}/add-comment(postId=${post.id})}">
+    <button id="addCommentButton" type="button" onclick="addComment()">Добавить комментарий</button>
+  </form>
+
+  <script>
+    function addComment(id) {
+      var button = document.getElementById("addCommentButton");
+      button.remove();
+
+      var form = document.getElementById("addCommentForm");
+
+      var newComment = document.createElement("textarea");
+      newComment.rows = 3;
+      newComment.name = "text";
+      newComment.style = "width: 800px;";
+      newComment.required = true;
+      form.appendChild(newComment);
+
+      var newButton = document.createElement("button");
+      newButton.innerHTML = "&#10003;";
+      newButton.style="float:right;"
+      form.appendChild(newButton);
+    }
+
+    function editComment(id) {
+      var p = document.getElementById("comment" + id);
+      var box = p.closest(".comment");
+      var actions = box.querySelector(".actions");
+      var textarea = actions.querySelector("textarea");
+
+      textarea.value = p.textContent.trim();
+      textarea.style = "width: 800px";
+      textarea.required = true;
+      p.style.display = "none";
+      actions.style.display = "block";
+      actions.style = "float: right"
+      textarea.focus();
+    }
+  </script>
+
+</div>
+</body>
+</html>
+
