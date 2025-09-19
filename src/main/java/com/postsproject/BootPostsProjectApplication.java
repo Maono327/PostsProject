@@ -1,4 +1,4 @@
-package com.maono.bootpostsproject;
+package com.postsproject;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -5,8 +5,8 @@ plugins {
 }
 
 group = 'com.maono'
-version = '0.0.1-SNAPSHOT'
-description = 'BootPostsProject'
+version = '0.0.2-SNAPSHOT'
+description = 'PostsProject'
 
 java {
     toolchain {
@@ -27,6 +27,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
