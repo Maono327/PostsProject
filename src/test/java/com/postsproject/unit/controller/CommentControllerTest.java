@@ -1,22 +1,20 @@
 package com.postsproject.unit.controller;
 
-import com.postsproject.configuration.mock.controller.CommentControllerUnitMockConfiguration;
-import com.postsproject.controller.CommentController;
 import com.postsproject.model.Comment;
 import com.postsproject.service.blg.interfaces.CommentService;
 import com.postsproject.service.util.validator.RequestCommentTextValidator;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockReset;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -26,25 +24,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringJUnitConfig(CommentControllerUnitMockConfiguration.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc
 class CommentControllerTest {
 
-    @Autowired
-    protected CommentController commentController;
-
-    @Autowired
+    @MockitoBean(reset = MockReset.BEFORE)
     protected CommentService commentService;
 
-    @Autowired
+    @MockitoBean(reset = MockReset.BEFORE)
     protected RequestCommentTextValidator validator;
 
+    @Autowired
     protected MockMvc mockMvc;
-
-    @BeforeEach
-    protected void setUp() {
-        reset(commentService, validator);
-        mockMvc = MockMvcBuilders.standaloneSetup(commentController).build();
-    }
 
     @Test
     public void testAddCommentToPost() throws Exception {

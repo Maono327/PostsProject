@@ -1,6 +1,5 @@
 package com.postsproject.unit.service.blg;
 
-import com.postsproject.configuration.mock.service.PostServiceUnitMockConfiguration;
 import com.postsproject.dto.request.RequestPostDTO;
 import com.postsproject.dto.response.ResponsePostEditFormDTO;
 import com.postsproject.dto.response.ResponsePostPageDTO;
@@ -9,17 +8,21 @@ import com.postsproject.model.Comment;
 import com.postsproject.model.Post;
 import com.postsproject.model.PostImage;
 import com.postsproject.model.Tag;
+import com.postsproject.repository.PostRepositoryImpl;
 import com.postsproject.repository.interfaces.PostRepository;
+import com.postsproject.service.blg.CommentServiceImpl;
 import com.postsproject.service.blg.PostServiceImpl;
+import com.postsproject.service.blg.TagServiceImpl;
 import com.postsproject.service.blg.interfaces.CommentService;
 import com.postsproject.service.blg.interfaces.TagService;
 import com.postsproject.service.util.B64Transformer;
 import com.postsproject.util.Page;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.bean.override.mockito.MockReset;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -32,34 +35,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-@SpringJUnitConfig(PostServiceUnitMockConfiguration.class)
+@SpringBootTest(classes = {
+        PostServiceImpl.class,
+        PostRepositoryImpl.class,
+        CommentServiceImpl.class,
+        TagServiceImpl.class,
+        B64Transformer.class
+})
 class PostServiceImplTest {
     @Autowired
     protected PostServiceImpl postService;
 
-    @Autowired
+    @MockitoBean(reset = MockReset.BEFORE)
     protected CommentService commentService;
 
-    @Autowired
+    @MockitoBean(reset = MockReset.BEFORE)
     protected TagService tagService;
 
-    @Autowired
+    @MockitoBean(reset = MockReset.BEFORE)
     protected B64Transformer b64Transformer;
 
-    @Autowired
+    @MockitoBean(reset = MockReset.BEFORE)
     protected PostRepository postRepository;
-
-    @BeforeEach
-    protected void setUp() {
-        reset(commentService, tagService, b64Transformer, postRepository);
-    }
 
     @Test
     public void testSave() {

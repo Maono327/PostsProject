@@ -1,16 +1,18 @@
 package com.postsproject.unit.service.blg;
 
-import com.postsproject.configuration.mock.service.TagServiceUnitMockConfiguration;
 import com.postsproject.model.Post;
 import com.postsproject.model.PostImage;
 import com.postsproject.model.Tag;
+import com.postsproject.repository.TagRepositoryImpl;
 import com.postsproject.repository.interfaces.TagRepository;
+import com.postsproject.service.blg.TagServiceImpl;
 import com.postsproject.service.blg.interfaces.TagService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockReset;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,24 +22,21 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-@SpringJUnitConfig(TagServiceUnitMockConfiguration.class)
+@SpringBootTest(classes = {
+        TagServiceImpl.class,
+        TagRepositoryImpl.class
+})
 class TagServiceImplTest {
     @Autowired
     protected TagService tagService;
 
-    @Autowired
+    @MockitoBean(reset = MockReset.BEFORE)
     protected TagRepository tagRepository;
-
-    @BeforeEach
-    protected void setUp() {
-        reset(tagRepository);
-    }
 
     @Test
     protected void testParseAndSaveTagsForPost() {
