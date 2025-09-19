@@ -1,22 +1,15 @@
 package com.postsproject.integration.controller;
 
-import com.postsproject.configuration.ServiceTestConfiguration;
-import com.postsproject.configuration.WebApplicationTestConfiguration;
-import com.postsproject.integration.BaseRepositoryTestFiller;
+import com.postsproject.integration.util.BaseCommonTestFiller;
 import com.postsproject.model.Comment;
 import com.postsproject.repository.interfaces.CommentRepository;
 import com.postsproject.service.blg.interfaces.CommentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
@@ -27,16 +20,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebAppConfiguration
-@ExtendWith(SpringExtension.class)
-@ContextHierarchy({
-        @ContextConfiguration(name = "service", classes = ServiceTestConfiguration.class),
-        @ContextConfiguration(name = "web", classes = WebApplicationTestConfiguration.class)
-})
-public class CommentControllerTest extends BaseRepositoryTestFiller {
-
-    @Autowired
-    protected WebApplicationContext webApplicationContext;
+@AutoConfigureMockMvc
+public class CommentControllerTest extends BaseCommonTestFiller {
 
     @Autowired
     protected CommentRepository commentRepository;
@@ -44,13 +29,13 @@ public class CommentControllerTest extends BaseRepositoryTestFiller {
     @Autowired
     protected CommentService commentService;
 
+    @Autowired
     protected MockMvc mockMvc;
 
     @BeforeEach
     protected void setUp() {
         setUpPosts();
         setUpComments();
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test

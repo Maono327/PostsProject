@@ -1,15 +1,12 @@
 package com.postsproject.integration.service.blg;
 
-import com.postsproject.configuration.ServiceTestConfiguration;
-import com.postsproject.integration.BaseRepositoryTestFiller;
+import com.postsproject.integration.util.BaseCommonTestFiller;
 import com.postsproject.model.Comment;
 import com.postsproject.repository.CommentRepositoryImpl;
 import com.postsproject.service.blg.CommentServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -20,10 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ContextHierarchy({
-        @ContextConfiguration(name = "service", classes = ServiceTestConfiguration.class)
-})
-public class CommentServiceImplTest extends BaseRepositoryTestFiller {
+public class CommentServiceImplTest extends BaseCommonTestFiller {
 
     @Autowired
     protected CommentServiceImpl commentService;

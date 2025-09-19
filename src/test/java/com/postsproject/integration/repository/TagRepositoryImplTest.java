@@ -1,6 +1,6 @@
 package com.postsproject.integration.repository;
 
-import com.postsproject.integration.BaseRepositoryTestFiller;
+import com.postsproject.integration.util.BaseRepositoryTestFiller;
 import com.postsproject.model.Tag;
 import com.postsproject.repository.TagRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,7 +1,6 @@
 package com.postsproject.integration.service.blg;
 
-import com.postsproject.configuration.ServiceTestConfiguration;
-import com.postsproject.integration.BaseRepositoryTestFiller;
+import com.postsproject.integration.util.BaseCommonTestFiller;
 import com.postsproject.model.Post;
 import com.postsproject.model.Tag;
 import com.postsproject.repository.TagRepositoryImpl;
@@ -10,18 +9,13 @@ import com.postsproject.service.blg.interfaces.PostService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ContextHierarchy({
-        @ContextConfiguration(name = "service", classes = ServiceTestConfiguration.class)
-})
-public class TagServiceImplTest extends BaseRepositoryTestFiller {
+public class TagServiceImplTest extends BaseCommonTestFiller {
     @Autowired
     protected TagServiceImpl tagService;
 
