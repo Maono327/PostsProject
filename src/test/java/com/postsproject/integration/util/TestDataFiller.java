@@ -1,36 +1,13 @@
-package com.postsproject.integration;
+package com.postsproject.integration.util;
 
-import com.postsproject.configuration.RepositoryTestConfiguration;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(SpringExtension.class)
-@ContextHierarchy(
-        @ContextConfiguration(name = "repo", classes = RepositoryTestConfiguration.class)
-)
-@TestPropertySource("classpath:test-database-application.properties")
-public class BaseRepositoryTestFiller {
-    @Autowired
+public class TestDataFiller {
+
     protected JdbcTemplate jdbcTemplate;
 
-    @AfterEach()
-    protected void cleanUp() {
-        jdbcTemplate.execute("""
-        DELETE FROM Tags;
-        DELETE FROM Tags_Posts;
-        DELETE FROM Comments;
-        DELETE FROM Posts;
-        
-        ALTER TABLE Tags ALTER COLUMN id RESTART WITH 1;
-        ALTER TABLE Comments ALTER COLUMN id RESTART WITH 1;
-        ALTER TABLE Posts ALTER COLUMN id RESTART WITH 1;
-        """);
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     protected void setUpPosts() {

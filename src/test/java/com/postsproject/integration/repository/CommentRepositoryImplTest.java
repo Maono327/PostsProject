@@ -1,7 +1,7 @@
 package com.postsproject.integration.repository;
 
 
-import com.postsproject.integration.BaseRepositoryTestFiller;
+import com.postsproject.integration.util.BaseRepositoryTestFiller;
 import com.postsproject.model.Comment;
 import com.postsproject.repository.CommentRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;

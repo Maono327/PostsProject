@@ -1,7 +1,7 @@
 package com.postsproject.integration.repository;
 
 
-import com.postsproject.integration.BaseRepositoryTestFiller;
+import com.postsproject.integration.util.BaseRepositoryTestFiller;
 import com.postsproject.model.Post;
 import com.postsproject.model.PostImage;
 import com.postsproject.repository.PostRepositoryImpl;

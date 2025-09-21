@@ -1,11 +1,10 @@
 package com.postsproject.integration.service.blg;
 
-import com.postsproject.configuration.ServiceTestConfiguration;
 import com.postsproject.dto.request.RequestPostDTO;
 import com.postsproject.dto.response.ResponsePostEditFormDTO;
 import com.postsproject.dto.response.ResponsePostPageDTO;
 import com.postsproject.dto.response.ResponsePostsTapeDTO;
-import com.postsproject.integration.BaseRepositoryTestFiller;
+import com.postsproject.integration.util.BaseCommonTestFiller;
 import com.postsproject.model.Comment;
 import com.postsproject.model.Post;
 import com.postsproject.model.PostImage;
@@ -18,8 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -32,10 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ContextHierarchy({
-        @ContextConfiguration(name = "service", classes = ServiceTestConfiguration.class)
-})
-public class PosetServiceImplTest extends BaseRepositoryTestFiller {
+public class PosetServiceImplTest extends BaseCommonTestFiller {
     @Autowired
     protected PostServiceImpl postService;
 

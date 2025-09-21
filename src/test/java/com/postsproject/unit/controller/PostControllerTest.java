@@ -1,6 +1,5 @@
 package com.postsproject.unit.controller;
 
-import com.postsproject.configuration.mock.controller.PostControllerUnitMockConfiguration;
 import com.postsproject.controller.PostController;
 import com.postsproject.dto.request.RequestPostDTO;
 import com.postsproject.dto.response.ResponsePostEditFormDTO;
@@ -17,8 +16,10 @@ import com.postsproject.util.Page;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.bean.override.mockito.MockReset;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceView;
@@ -33,7 +34,6 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -47,25 +47,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@SpringJUnitConfig(PostControllerUnitMockConfiguration.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class PostControllerTest {
     @Autowired
     protected PostController postController;
 
-    @Autowired
+    @MockitoBean(reset = MockReset.BEFORE)
     protected PostService postService;
 
-    @Autowired
+    @MockitoBean(reset = MockReset.BEFORE)
     protected TagService tagService;
 
-    @Autowired
+    @MockitoBean(reset = MockReset.BEFORE)
     protected RequestPostValidator validator;
 
-    private MockMvc mockMvc;
+    protected MockMvc mockMvc;
 
     @BeforeEach
     protected void setUp() {
-        reset(postService, tagService, validator);
         mockMvc = MockMvcBuilders.standaloneSetup(postController)
                 .setViewResolvers((viewName, locale) -> {
                     if (viewName.startsWith("redirect:")) {

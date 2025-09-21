@@ -10,25 +10,27 @@
 ![img.png](readme_images/img.png)
 ![img_1.png](readme_images/img_1.png)
 
+Проект работает на базе Spring Boot, поэтому для запуска необходимо только выполнить сборку executable jar. Внутри себя он будет содержать встроенный веб-сервер tomcat
+
 ### Для запуска проекта нужно использовать:
- - Контейнер сервлетов
  - Java 21+
  - H2DB
 
 ### Сборка:
-Перед сборкой проекта необходимо переименовать файл `database-application.properties.in`, лежащий по пути `/resources/properties/` в `database-application.properties`.
-Затем необходимо указать данные для подключения к базе данных.\
-**Пример:**
-```properties
-spring.datasource.url=jdbc:h2:mem:postsdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-spring.datasource.username=sa
-spring.datasource.password=
-```
+В проекте используется враппер `gradlew`. Для прогона тестов и сборки проекта в `jar` выполните команду `./gradlew build` находясь в директории проекта.
+После выполнения данной команды, в корне появится папка `build`. `Jar` архив можно найти по пути `/build/libs/PostsProject-0.0.2-SNAPSHOT.jar`.
+Если вам необходимо узнать результаты тестов, то можно открыть каталог `reports`, содердащий `html` страницы с результатми.
 
-Далее необходимо выполнить сборку проекта используя команду
+
+### Запуск
+Перед запуском необходимо установить `url`, `username, `password` для  подключения к базе данных в переменных окружения среды.
+Это можно сделать используя команду `export`.
+Например:
 ```shell
-mvn clean package
+export DB_URL=jdbc:h2:mem:postsdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+export DB_USERNAME=sa
+export DB_PASSWORD=
 ```
-В созданном архвите `target` будет находится файл `PostsProject.war`. Данный файл необходимо переместить в каталог `webapps` контейнера сервлетов.
 
-Лента постов будет доступна по адресу `адрес_и_порт_контейнера_сервлетов/PostsProject/posts`
+Для запуска нужно просто выполнить `java -jar PostsProject-0.0.2-SNAPSHOT.jar`
+Лента постов будет доступна по адресу `локальный_адресс/posts`

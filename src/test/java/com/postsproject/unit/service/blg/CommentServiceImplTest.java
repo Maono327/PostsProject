@@ -1,13 +1,15 @@
 package com.postsproject.unit.service.blg;
 
-import com.postsproject.configuration.mock.service.CommentServiceUnitMockConfiguration;
 import com.postsproject.model.Comment;
+import com.postsproject.repository.CommentRepositoryImpl;
 import com.postsproject.repository.interfaces.CommentRepository;
+import com.postsproject.service.blg.CommentServiceImpl;
 import com.postsproject.service.blg.interfaces.CommentService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockReset;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -16,24 +18,21 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-@SpringJUnitConfig(CommentServiceUnitMockConfiguration.class)
+@SpringBootTest(classes = {
+        CommentServiceImpl.class,
+        CommentRepositoryImpl.class
+})
 class CommentServiceImplTest {
     @Autowired
     protected CommentService commentService;
 
-    @Autowired
+    @MockitoBean(reset = MockReset.BEFORE)
     protected CommentRepository commentRepository;
-
-    @BeforeEach
-    protected void setUp() {
-        reset(commentRepository);
-    }
 
     @Test
     protected void testSave() {

@@ -1,11 +1,9 @@
 package com.postsproject.integration.controller;
 
-import com.postsproject.configuration.ServiceTestConfiguration;
-import com.postsproject.configuration.WebApplicationTestConfiguration;
 import com.postsproject.dto.response.ResponsePostEditFormDTO;
 import com.postsproject.dto.response.ResponsePostPageDTO;
 import com.postsproject.dto.response.ResponsePostsTapeDTO;
-import com.postsproject.integration.BaseRepositoryTestFiller;
+import com.postsproject.integration.util.BaseCommonTestFiller;
 import com.postsproject.model.Comment;
 import com.postsproject.model.Post;
 import com.postsproject.model.PostImage;
@@ -16,20 +14,15 @@ import com.postsproject.service.blg.interfaces.TagService;
 import com.postsproject.util.Page;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,16 +43,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
-@WebAppConfiguration
-@ExtendWith(SpringExtension.class)
-@ContextHierarchy({
-        @ContextConfiguration(name = "service", classes = ServiceTestConfiguration.class),
-        @ContextConfiguration(name = "web", classes = WebApplicationTestConfiguration.class)
-})
-public class PostControllerTest extends BaseRepositoryTestFiller {
-
-    @Autowired
-    protected WebApplicationContext webApplicationContext;
+@AutoConfigureMockMvc
+public class PostControllerTest extends BaseCommonTestFiller {
 
     @Autowired
     protected PostService postService;
@@ -70,12 +55,12 @@ public class PostControllerTest extends BaseRepositoryTestFiller {
     @Autowired
     protected PostRepository postRepository;
 
+    @Autowired
     protected MockMvc mockMvc;
 
     @BeforeEach
     protected void setUp() {
         setUpPosts();
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
